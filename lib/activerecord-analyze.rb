@@ -1,0 +1,2 @@
+module ActiveRecordAnalyze
+end
