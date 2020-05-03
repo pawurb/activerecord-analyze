@@ -2,8 +2,6 @@
 
 This gem adds an `analyze` method to Active Record query objects. It executes `EXPLAIN ANALYZE` on a query SQL.
 
-![alt text](https://pawelurbanek.com/files/active-record-analyze.png)
-
 ## Installation
 
 In your Gemfile:
