@@ -15,5 +15,5 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(spec)/})
   gem.require_paths = ["lib"]
   gem.license       = "MIT"
-  gem.add_dependency "rails", "~> 5.1.0"
+  gem.add_dependency "rails", ">= 5.1.0"
 end
