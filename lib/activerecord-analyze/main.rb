@@ -50,6 +50,7 @@ module ActiveRecord
           .strip.gsub(/\s+/, " ")
           .gsub(/\(\s?\s?\s?,/, "(")
           .gsub(/\s,\s/, " ")
+          .gsub(/\(\s?\)/, "")
 
           sql = "EXPLAIN #{opts_sql} #{to_sql(arel, binds)}"
           PostgreSQL::ExplainPrettyPrinter.new.pp(exec_query(sql, "EXPLAIN #{opts_sql}".strip, binds))
@@ -71,7 +72,13 @@ module ActiveRecord
   module Explain
     def exec_analyze(queries, opts = {}) # :nodoc:
       str = queries.map do |sql, binds|
-        msg = "EXPLAIN ANALYZE for: #{sql}".dup
+        analyze_msg = if opts[:analyze] == false
+          ""
+        else
+          " ANALYZE"
+        end
+
+        msg = "EXPLAIN#{analyze_msg} for: #{sql}".dup
         unless binds.empty?
           msg << " "
           msg << binds.map { |attr| render_bind(attr) }.inspect
