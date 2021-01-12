@@ -2,9 +2,57 @@ module ActiveRecord
   module ConnectionAdapters
     module PostgreSQL
       module DatabaseStatements
-        def analyze(arel, binds = [])
-          sql = "EXPLAIN ANALYZE #{to_sql(arel, binds)}"
-          PostgreSQL::ExplainPrettyPrinter.new.pp(exec_query(sql, "EXPLAIN ANALYZE", binds))
+        def analyze(arel, binds = [], opts = {})
+          format_sql = if fmt = opts[:format].presence
+            case fmt
+            when :json
+              "FORMAT JSON,"
+            when :yaml
+              "FORMAT YAML,"
+            when :text
+              "FORMAT TEXT,"
+            when :xml
+              "FORMAT XML,"
+            end
+          end
+
+          verbose_sql = if opts[:verbose] == true
+            ", VERBOSE"
+          end
+
+          costs_sql = if opts[:costs] == true
+            ", COSTS"
+          end
+
+          settings_sql = if opts[:settings] == true
+            ", SETTINGS"
+          end
+
+          buffers_sql = if opts[:buffers] == true
+            ", BUFFERS"
+          end
+
+          timing_sql = if opts[:timing] == true
+            ", TIMING"
+          end
+
+          summary_sql = if opts[:summary] == true
+            ", SUMMARY"
+          end
+
+          analyze_sql = if opts[:analyze] == false
+            ""
+          else
+            "ANALYZE"
+          end
+
+          opts_sql = "(#{format_sql} #{analyze_sql}#{verbose_sql}#{costs_sql}#{settings_sql}#{buffers_sql}#{timing_sql}#{summary_sql})"
+          .strip.gsub(/\s+/, " ")
+          .gsub(/\(\s?\s?\s?,/, "(")
+          .gsub(/\s,\s/, " ")
+
+          sql = "EXPLAIN #{opts_sql} #{to_sql(arel, binds)}"
+          PostgreSQL::ExplainPrettyPrinter.new.pp(exec_query(sql, "EXPLAIN #{opts_sql}".strip, binds))
         end
       end
     end
@@ -13,15 +61,15 @@ end
 
 module ActiveRecord
   class Relation
-    def analyze
-      exec_analyze(collecting_queries_for_explain { exec_queries })
+    def analyze(opts = {})
+      exec_analyze(collecting_queries_for_explain { exec_queries }, opts)
     end
   end
 end
 
 module ActiveRecord
   module Explain
-    def exec_analyze(queries) # :nodoc:
+    def exec_analyze(queries, opts = {}) # :nodoc:
       str = queries.map do |sql, binds|
         msg = "EXPLAIN ANALYZE for: #{sql}".dup
         unless binds.empty?
@@ -29,7 +77,7 @@ module ActiveRecord
           msg << binds.map { |attr| render_bind(attr) }.inspect
         end
         msg << "\n"
-        msg << connection.analyze(sql, binds)
+        msg << connection.analyze(sql, binds, opts)
       end.join("\n")
 
       # Overriding inspect to be more human readable, especially in the console.

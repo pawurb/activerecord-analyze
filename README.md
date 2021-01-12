@@ -14,4 +14,4 @@ gem 'activerecord-analyze'
 
 ### Disclaimer
 
-It is a bit experimental and can break with new Rails release. As soon as [this pull request](https://github.com/rails/rails/pull/31374/) is merged it will be obsolete.
+It is a bit experimental and can break with new Rails release.
