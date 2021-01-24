@@ -92,6 +92,8 @@ User.all.analyze(
 
 ```
 
+The following `format` options are supported `:json, :hash, :yaml, :text, :xml`. Especially the `:json` format is useful because it allows you to visualize a query plan using [a visualizer tool](https://tatiyants.com/pev/#/plans/new).
+
 Optionally you can disable running the `ANALYZE` query and only generate the plan:
 
 ```ruby
