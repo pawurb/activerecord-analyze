@@ -7,6 +7,8 @@ module ActiveRecord
             case fmt
             when :json
               "FORMAT JSON,"
+            when :hash
+              "FORMAT JSON,"
             when :yaml
               "FORMAT YAML,"
             when :text
@@ -63,7 +65,18 @@ end
 module ActiveRecord
   class Relation
     def analyze(opts = {})
-      exec_analyze(collecting_queries_for_explain { exec_queries }, opts)
+      res = exec_analyze(collecting_queries_for_explain { exec_queries }, opts)
+      if [:json, :hash].include?(opts[:format])
+        raw_json = "[" + res[/\[(.*?)(\(\d row)/m, 1]
+
+        if opts[:format] == :json
+          JSON.parse(raw_json).to_json
+        elsif opts[:format] == :hash
+          JSON.parse(raw_json)
+        end
+      else
+        res
+      end
     end
   end
 end
