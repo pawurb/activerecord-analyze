@@ -67,7 +67,9 @@ module ActiveRecord
     def analyze(opts = {})
       res = exec_analyze(collecting_queries_for_explain { exec_queries }, opts)
       if [:json, :hash].include?(opts[:format])
-        raw_json = "[" + res[/\[(.*?)(\(\d row)/m, 1]
+        start = res.index("[")
+        finish = res.rindex("]")
+        raw_json = res.slice(start, finish - start + 1)
 
         if opts[:format] == :json
           JSON.parse(raw_json).to_json

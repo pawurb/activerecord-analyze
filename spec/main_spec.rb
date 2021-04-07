@@ -31,4 +31,13 @@ describe "ActiveRecord analyze" do
       ]
     end
   end
+
+  describe "format hash" do
+    it "works" do
+      result = User.all.analyze(format: :hash)
+      expect(result[0].keys.sort).to eq [
+        "Execution Time", "Plan", "Planning Time", "Triggers"
+      ]
+    end
+  end
 end
