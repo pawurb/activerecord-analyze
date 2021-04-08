@@ -40,4 +40,18 @@ describe "ActiveRecord analyze" do
       ]
     end
   end
+
+  describe "supports options" do
+    it "works" do
+      result = User.all.limit(10).where.not(email: nil).analyze(
+        format: :hash,
+        costs: true,
+        timing: true,
+        summary: true
+      )
+      expect(result[0].keys.sort).to eq [
+        "Execution Time", "Plan", "Planning Time", "Triggers"
+      ]
+    end
+  end
 end

@@ -3,6 +3,13 @@ module ActiveRecord
     module PostgreSQL
       module DatabaseStatements
         def analyze(arel, binds = [], opts = {})
+          default_opts = {
+            buffers: true,
+            verbose: true
+          }
+
+          opts = default_opts.merge(opts)
+
           format_sql = if fmt = opts[:format].presence
             case fmt
             when :json
@@ -67,7 +74,7 @@ module ActiveRecord
     def analyze(opts = {})
       res = exec_analyze(collecting_queries_for_explain { exec_queries }, opts)
       if [:json, :hash].include?(opts[:format])
-        start = res.index("[")
+        start = res.index("[\n")
         finish = res.rindex("]")
         raw_json = res.slice(start, finish - start + 1)
 
