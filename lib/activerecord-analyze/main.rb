@@ -3,13 +3,6 @@ module ActiveRecord
     module PostgreSQL
       module DatabaseStatements
         def analyze(arel, binds = [], opts = {})
-          default_opts = {
-            buffers: true,
-            verbose: true
-          }
-
-          opts = default_opts.merge(opts)
-
           format_sql = if fmt = opts[:format].presence
             case fmt
             when :json
