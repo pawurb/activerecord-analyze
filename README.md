@@ -23,13 +23,13 @@ gem 'activerecord-analyze'
 The `analyze` method supports the following EXPLAIN query options ([PostgreSQL docs reference](https://www.postgresql.org/docs/12/sql-explain.html)):
 
 ```
-BUFFERS [ boolean ]
-VERBOSE [ boolean ]
-COSTS [ boolean ]
-SETTINGS [ boolean ]
-TIMING [ boolean ]
-SUMMARY [ boolean ]
-FORMAT { TEXT | XML | JSON | YAML }
+buffers: [ boolean ]
+verbose: [ boolean ]
+costs: [ boolean ]
+settings: [ boolean ]
+timing: [ boolean ]
+summary: [ boolean ]
+format: { :text | :json | :xml | :yaml | :pretty }
 ```
 
 You can execute it like that:
