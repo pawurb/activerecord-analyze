@@ -43,7 +43,7 @@ describe "ActiveRecord analyze" do
 
   describe "format pretty" do
     it "works" do
-      result = User.all.analyze(format: :pretty)
+      result = User.all.analyze(format: :pretty_json)
       expect(JSON.parse(result)[0].keys.sort).to eq [
         "Execution Time", "Plan", "Planning Time", "Triggers"
       ]

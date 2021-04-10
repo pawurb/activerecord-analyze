@@ -29,7 +29,7 @@ costs: [ boolean ]
 settings: [ boolean ]
 timing: [ boolean ]
 summary: [ boolean ]
-format: { :text | :json | :xml | :yaml | :pretty }
+format: { :text | :json | :xml | :yaml | :pretty_json }
 ```
 
 You can execute it like that:
@@ -37,7 +37,7 @@ You can execute it like that:
 ```ruby
 
 puts User.all.analyze(
-  format: :pretty, # :pretty format option generates a formatted JSON output
+  format: :pretty_json, # :pretty_json format option generates a formatted JSON output
   verbose: true,
   costs: true,
   settings: true,

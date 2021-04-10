@@ -9,7 +9,7 @@ module ActiveRecord
               "FORMAT JSON,"
             when :hash
               "FORMAT JSON,"
-            when :pretty
+            when :pretty_json
               "FORMAT JSON,"
             when :yaml
               "FORMAT YAML,"
@@ -68,7 +68,7 @@ module ActiveRecord
   class Relation
     def analyze(opts = {})
       res = exec_analyze(collecting_queries_for_explain { exec_queries }, opts)
-      if [:json, :hash, :pretty].include?(opts[:format])
+      if [:json, :hash, :pretty_json].include?(opts[:format])
         start = res.index("[\n")
         finish = res.rindex("]")
         raw_json = res.slice(start, finish - start + 1)
@@ -77,7 +77,7 @@ module ActiveRecord
           JSON.parse(raw_json).to_json
         elsif opts[:format] == :hash
           JSON.parse(raw_json)
-        elsif opts[:format] == :pretty
+        elsif opts[:format] == :pretty_json
           JSON.pretty_generate(JSON.parse(raw_json))
         end
       else
