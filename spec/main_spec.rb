@@ -41,6 +41,15 @@ describe "ActiveRecord analyze" do
     end
   end
 
+  describe "format pretty" do
+    it "works" do
+      result = User.all.analyze(format: :pretty)
+      expect(JSON.parse(result)[0].keys.sort).to eq [
+        "Execution Time", "Plan", "Planning Time", "Triggers"
+      ]
+    end
+  end
+
   describe "supports options" do
     it "works" do
       result = User.all.limit(10).where.not(email: nil).analyze(
