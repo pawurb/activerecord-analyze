@@ -6,17 +6,19 @@ module ActiveRecord
           format_sql = if fmt = opts[:format].presence
             case fmt
             when :json
-              "FORMAT JSON,"
+              "FORMAT JSON, "
             when :hash
-              "FORMAT JSON,"
+              "FORMAT JSON, "
             when :pretty_json
-              "FORMAT JSON,"
+              "FORMAT JSON, "
             when :yaml
-              "FORMAT YAML,"
+              "FORMAT YAML, "
             when :text
-              "FORMAT TEXT,"
+              "FORMAT TEXT, "
             when :xml
-              "FORMAT XML,"
+              "FORMAT XML, "
+            else
+              ""
             end
           end
 
@@ -50,7 +52,7 @@ module ActiveRecord
             "ANALYZE"
           end
 
-          opts_sql = "(#{format_sql} #{analyze_sql}#{verbose_sql}#{costs_sql}#{settings_sql}#{buffers_sql}#{timing_sql}#{summary_sql})"
+          opts_sql = "(#{format_sql}#{analyze_sql}#{verbose_sql}#{costs_sql}#{settings_sql}#{buffers_sql}#{timing_sql}#{summary_sql})"
           .strip.gsub(/\s+/, " ")
           .gsub(/\(\s?\s?\s?,/, "(")
           .gsub(/\s,\s/, " ")
