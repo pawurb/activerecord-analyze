@@ -3,60 +3,7 @@ module ActiveRecord
     module PostgreSQL
       module DatabaseStatements
         def analyze(arel, binds = [], opts = {})
-          format_sql = if fmt = opts[:format].presence
-            case fmt
-            when :json
-              "FORMAT JSON, "
-            when :hash
-              "FORMAT JSON, "
-            when :pretty_json
-              "FORMAT JSON, "
-            when :yaml
-              "FORMAT YAML, "
-            when :text
-              "FORMAT TEXT, "
-            when :xml
-              "FORMAT XML, "
-            else
-              ""
-            end
-          end
-
-          verbose_sql = if opts[:verbose] == true
-            ", VERBOSE"
-          end
-
-          costs_sql = if opts[:costs] == true
-            ", COSTS"
-          end
-
-          settings_sql = if opts[:settings] == true
-            ", SETTINGS"
-          end
-
-          buffers_sql = if opts[:buffers] == true
-            ", BUFFERS"
-          end
-
-          timing_sql = if opts[:timing] == true
-            ", TIMING"
-          end
-
-          summary_sql = if opts[:summary] == true
-            ", SUMMARY"
-          end
-
-          analyze_sql = if opts[:analyze] == false
-            ""
-          else
-            "ANALYZE"
-          end
-
-          opts_sql = "(#{format_sql}#{analyze_sql}#{verbose_sql}#{costs_sql}#{settings_sql}#{buffers_sql}#{timing_sql}#{summary_sql})"
-          .strip.gsub(/\s+/, " ")
-          .gsub(/\(\s?\s?\s?,/, "(")
-          .gsub(/\s,\s/, " ")
-          .gsub(/\(\s?\)/, "")
+          opts_sql = ActiveRecordAnalyze.build_prefix(opts)
 
           sql = "EXPLAIN #{opts_sql} #{to_sql(arel, binds)}"
           PostgreSQL::ExplainPrettyPrinter.new.pp(exec_query(sql, "EXPLAIN #{opts_sql}".strip, binds))

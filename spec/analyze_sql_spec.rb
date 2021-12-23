@@ -1,31 +1,35 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require "migrations/create_users_migration.rb"
-
-class User < ActiveRecord::Base; end
 
 describe "ActiveRecord analyze" do
-  before(:all) do
-    ActiveRecord::Base.establish_connection(
-      ENV.fetch("DATABASE_URL")
-    )
+  let(:raw_sql) do
+    "SELECT * FROM users WHERE email = 'email@example.com'"
+  end
 
-    @schema_migration = ActiveRecord::Base.connection.schema_migration
-    ActiveRecord::Migrator.new(:up, [CreateUsers.new], @schema_migration).migrate
+  let(:result) do
+    ActiveRecordAnalyze.analyze_sql(raw_sql, opts)
   end
 
   describe "default opts" do
+    let(:opts) do
+      {}
+    end
+
     it "works" do
       expect do
-        User.all.analyze
+        result
       end.not_to raise_error
     end
   end
 
   describe "format json" do
+    let(:opts) do
+      { format: :json }
+    end
+
     it "works" do
-      result = User.all.analyze(format: :json)
+      puts result
       expect(JSON.parse(result)[0].keys.sort).to eq [
         "Execution Time", "Plan", "Planning Time", "Triggers"
       ]
@@ -33,8 +37,11 @@ describe "ActiveRecord analyze" do
   end
 
   describe "format hash" do
+    let(:opts) do
+      { format: :hash }
+    end
+
     it "works" do
-      result = User.all.analyze(format: :hash)
       expect(result[0].keys.sort).to eq [
         "Execution Time", "Plan", "Planning Time", "Triggers"
       ]
@@ -42,8 +49,11 @@ describe "ActiveRecord analyze" do
   end
 
   describe "format pretty" do
+    let(:opts) do
+      { format: :pretty_json }
+    end
+
     it "works" do
-      result = User.all.analyze(format: :pretty_json)
       expect(JSON.parse(result)[0].keys.sort).to eq [
         "Execution Time", "Plan", "Planning Time", "Triggers"
       ]
@@ -51,13 +61,20 @@ describe "ActiveRecord analyze" do
   end
 
   describe "supports options" do
-    it "works" do
-      result = User.all.limit(10).where.not(email: nil).analyze(
+    let(:raw_sql) do
+      "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"email\" IS NOT NULL LIMIT 10"
+    end
+
+    let(:opts) do
+      {
         format: :hash,
         costs: true,
         timing: true,
         summary: true
-      )
+      }
+    end
+
+    it "works" do
       expect(result[0].keys.sort).to eq [
         "Execution Time", "Plan", "Planning Time", "Triggers"
       ]

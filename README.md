@@ -109,6 +109,43 @@ User.all.analyze(analyze: false)
 
 ```
 
+### Analyzing raw SQL queries
+
+You can also use a raw SQL query string to generate an EXPLAIN ANALYZE output:
+
+```ruby
+query = "SELECT * FROM users WHERE email = 'email@example.com'"
+
+puts ActiveRecordAnalyze.analyze_sql(query, { format: :json})
+
+# [
+# {
+#    "Plan": {
+#      "Node Type": "Seq Scan",
+#      "Parallel Aware": false,
+#      "Relation Name": "users",
+#      "Alias": "users",
+#      "Startup Cost": 0.00,
+#      "Total Cost": 18.75,
+#      "Plan Rows": 4,
+#      "Plan Width": 88,
+#      "Actual Startup Time": 0.010,
+#      "Actual Total Time": 0.018,
+#      "Actual Rows": 0,
+#      "Actual Loops": 1,
+#      "Filter": "((email)::text = 'email@example.com'::text)",
+#      "Rows Removed by Filter": 0
+#    },
+#    "Planning Time": 0.052,
+#    "Triggers": [
+#    ],
+#    "Execution Time": 0.062
+# }
+# ]
+```
+
+This feature is helpful in analyzing SQL queries extracted from the logs.
+
 ### Disclaimer
 
 It is a bit experimental and can break with new Rails release.
