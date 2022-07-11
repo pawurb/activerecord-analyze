@@ -15,8 +15,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(spec)/})
   gem.require_paths = ["lib"]
   gem.license       = "MIT"
-  gem.add_dependency "activerecord", ">= 5.1.0"
-  gem.add_dependency "railties", ">= 5.1.0"
+  gem.add_dependency "activerecord"
+  gem.add_dependency "railties"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "pg"
   gem.add_development_dependency "rspec"
