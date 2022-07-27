@@ -5,7 +5,7 @@ jobs:
       - image: circleci/ruby:2.6.5
         environment:
           DATABASE_URL: postgresql://postgres:secret@localhost:5432/activerecord-analyze-test
-      - image: circleci/postgres:11.5
+      - image: cimg/postgres:12.10
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: activerecord-analyze-test

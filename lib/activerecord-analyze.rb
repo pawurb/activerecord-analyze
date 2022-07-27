@@ -4,6 +4,17 @@ require 'activerecord-analyze/main'
 
 module ActiveRecordAnalyze
   def self.analyze_sql(raw_sql, opts = {})
+    if opts[:full_debug] == true
+      opts = {
+        format: :pretty_json,
+        verbose: true,
+        costs: true,
+        buffers: true,
+        timing: true,
+        summary: true
+      }
+    end
+
     prefix = "EXPLAIN #{build_prefix(opts)}"
 
     result = ActiveRecord::Base.connection.execute("#{prefix} #{raw_sql}").to_a

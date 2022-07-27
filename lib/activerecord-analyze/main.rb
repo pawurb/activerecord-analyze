@@ -16,6 +16,17 @@ end
 module ActiveRecord
   class Relation
     def analyze(opts = {})
+      if opts[:full_debug] == true
+        opts = {
+          format: :pretty_json,
+          verbose: true,
+          costs: true,
+          buffers: true,
+          timing: true,
+          summary: true
+        }
+      end
+
       res = exec_analyze(collecting_queries_for_explain { exec_queries }, opts)
       if [:json, :hash, :pretty_json].include?(opts[:format])
         start = res.index("[\n")

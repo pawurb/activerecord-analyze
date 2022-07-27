@@ -50,6 +50,15 @@ describe "ActiveRecord analyze" do
     end
   end
 
+  describe "full_debug" do
+    it "works" do
+      result = User.all.analyze(full_debug: true)
+      expect(JSON.parse(result)[0].keys.sort).to eq [
+        "Execution Time", "Plan", "Planning Time", "Triggers"
+      ]
+    end
+  end
+
   describe "supports options" do
     it "works" do
       result = User.all.limit(10).where.not(email: nil).analyze(

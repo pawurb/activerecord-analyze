@@ -80,4 +80,23 @@ describe "ActiveRecord analyze" do
       ]
     end
   end
+
+  describe "supports full_debug option" do
+    let(:raw_sql) do
+      "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"email\" IS NOT NULL LIMIT 10"
+    end
+
+    let(:opts) do
+      {
+        full_debug: true
+      }
+    end
+
+    it "works" do
+      puts result
+      expect(JSON.parse(result)[0].keys.sort).to eq [
+        "Execution Time", "Plan", "Planning Time", "Triggers"
+      ]
+    end
+  end
 end
