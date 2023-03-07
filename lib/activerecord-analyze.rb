@@ -91,5 +91,6 @@ module ActiveRecordAnalyze
       .gsub(/\(\s?\s?\s?,/, "(")
       .gsub(/\s,\s/, " ")
       .gsub(/\(\s?\)/, "")
+      .gsub(/,\s+\)/, ")")
   end
 end

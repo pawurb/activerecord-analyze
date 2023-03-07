@@ -50,6 +50,13 @@ describe "ActiveRecord analyze" do
     end
   end
 
+  describe "analyze:false with some format option" do
+    it "works" do
+      result = User.all.analyze(format: :pretty_json, analyze: false)
+      expect(JSON.parse(result)[0].keys.sort).to eq ["Plan"]
+    end
+  end
+
   describe "full_debug" do
     it "works" do
       result = User.all.analyze(full_debug: true)
