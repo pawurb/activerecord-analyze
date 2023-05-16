@@ -6,7 +6,7 @@ You can check out this blog post for more info on how to [debug and fix slow que
 
 The following `format` options are supported `:json, :hash, :yaml, :text, :xml`. Especially the `:json` format is useful because it let's you visualize a query plan using [a visualizer tool](https://tatiyants.com/pev/#/plans/new).
 
-![PG Query visualizer plan](https://raw.githubusercontent.com/pawurb/activerecord-analyze/master/query-plan.png)
+![PG Query visualizer plan](https://raw.githubusercontent.com/pawurb/activerecord-analyze/main/query-plan.png)
 
 ## Installation
 
