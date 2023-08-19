@@ -1,4 +1,4 @@
-# ActiveRecord Analyze [![Gem Version](https://badge.fury.io/rb/activerecord-analyze.svg)](https://badge.fury.io/rb/activerecord-analyze) [![CircleCI](https://circleci.com/gh/pawurb/activerecord-analyze.svg?style=svg)](https://circleci.com/gh/pawurb/activerecord-analyze)
+# ActiveRecord Analyze [![Gem Version](https://badge.fury.io/rb/activerecord-analyze.svg)](https://badge.fury.io/rb/activerecord-analyze) [![GH Actions](https://github.com/pawurb/activerecord-analyze/actions/workflows/ci.yml/badge.svg)](https://github.com/pawurb/activerecord-analyze/actions)
 
 This gem adds an `analyze` method to Active Record query objects. It executes `EXPLAIN ANALYZE` on a query SQL.
 

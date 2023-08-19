@@ -1,0 +1,48 @@
+name: Ruby CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ['3.2', '3.1', '3.0', '2.7', '2.6']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run PostgreSQL
+        run: |
+          docker run --env POSTGRES_USER=postgres \
+            --env POSTGRES_DB=activerecord-analyze-test \
+            --env POSTGRES_PASSWORD=secret \
+            -d -p 5432:5432 postgres:12.10-alpine \
+            postgres -c shared_preload_libraries=pg_stat_statements
+          sleep 10
+      - name: Set up Ruby ${{ matrix.ruby-version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+      - name: Setup dependencies
+        run: |
+          gem update --system
+          gem install bundler
+          sudo apt-get update --allow-releaseinfo-change
+          sudo apt install postgresql-client
+          sudo apt install libpq-dev
+          bundle config set --local path 'vendor/bundle'
+          bundle install
+          sleep 10
+      - name: Run tests
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: postgres
+          POSTGRES_DB: activerecord-analyze-test
+          POSTGRES_PASSWORD: secret
+          DATABASE_URL: postgresql://postgres:secret@localhost:5432/activerecord-analyze-test
+        run: |
+          bundle exec rspec spec/
