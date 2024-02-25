@@ -14,7 +14,10 @@ RSpec.configure do |config|
       ENV.fetch("DATABASE_URL")
     )
 
-    @schema_migration = ActiveRecord::Base.connection.schema_migration
-    ActiveRecord::Migrator.new(:up, [CreateUsers.new], @schema_migration).migrate
+    ActiveRecord::Schema.define do
+      unless ActiveRecord::Base.connection.table_exists? "users"
+        CreateUsers.new.change
+      end
+    end
   end
 end

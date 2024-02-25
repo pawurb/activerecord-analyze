@@ -23,6 +23,8 @@ describe "ActiveRecord analyze" do
     end
   end
 
+  EXPECTED_KEYS = ["Execution Time", "Plan", "Planning Time", "Triggers"]
+
   describe "format json" do
     let(:opts) do
       { format: :json }
@@ -30,9 +32,7 @@ describe "ActiveRecord analyze" do
 
     it "works" do
       puts result
-      expect(JSON.parse(result)[0].keys.sort).to eq [
-           "Execution Time", "Plan", "Planning Time", "Triggers",
-         ]
+      expect(JSON.parse(result)[0].keys.sort).to eq EXPECTED_KEYS
     end
   end
 
@@ -42,9 +42,7 @@ describe "ActiveRecord analyze" do
     end
 
     it "works" do
-      expect(result[0].keys.sort).to eq [
-           "Execution Time", "Plan", "Planning Time", "Triggers",
-         ]
+      expect(result[0].keys.sort).to eq EXPECTED_KEYS
     end
   end
 
@@ -54,9 +52,7 @@ describe "ActiveRecord analyze" do
     end
 
     it "works" do
-      expect(JSON.parse(result)[0].keys.sort).to eq [
-           "Execution Time", "Plan", "Planning Time", "Triggers",
-         ]
+      expect(JSON.parse(result)[0].keys.sort).to eq EXPECTED_KEYS
     end
   end
 
@@ -75,9 +71,7 @@ describe "ActiveRecord analyze" do
     end
 
     it "works" do
-      expect(result[0].keys.sort).to eq [
-           "Execution Time", "Plan", "Planning Time", "Triggers",
-         ]
+      expect(result[0].keys.sort).to eq EXPECTED_KEYS
     end
   end
 
@@ -94,9 +88,7 @@ describe "ActiveRecord analyze" do
 
     it "works" do
       puts result
-      expect(JSON.parse(result)[0].keys.sort).to eq [
-           "Execution Time", "Plan", "Planning Time", "Triggers",
-         ]
+      expect(JSON.parse(result)[0].keys.sort).to eq EXPECTED_KEYS
     end
   end
 end
