@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'rubygems'
+require "rubygems"
 require "active_record/railtie"
-require 'bundler/setup'
+require "bundler/setup"
 require "migrations/create_users_migration.rb"
-require_relative '../lib/activerecord-analyze'
+require_relative "../lib/activerecord-analyze"
 
 ENV["DATABASE_URL"] ||= "postgresql://postgres:secret@localhost:5432/activerecord-analyze-test"
 

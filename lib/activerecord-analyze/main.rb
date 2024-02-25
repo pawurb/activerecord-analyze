@@ -23,7 +23,7 @@ module ActiveRecord
           costs: true,
           buffers: true,
           timing: true,
-          summary: true
+          summary: true,
         }
       end
 
@@ -52,10 +52,10 @@ module ActiveRecord
     def exec_analyze(queries, opts = {}) # :nodoc:
       str = queries.map do |sql, binds|
         analyze_msg = if opts[:analyze] == false
-          ""
-        else
-          " ANALYZE"
-        end
+            ""
+          else
+            " ANALYZE"
+          end
 
         msg = "EXPLAIN#{analyze_msg} for: #{sql}".dup
         unless binds.empty?
@@ -75,4 +75,3 @@ module ActiveRecord
     end
   end
 end
-

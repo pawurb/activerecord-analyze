@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 require "migrations/create_users_migration.rb"
 
 class User < ActiveRecord::Base; end
@@ -27,8 +27,8 @@ describe "ActiveRecord analyze" do
     it "works" do
       result = User.all.analyze(format: :json)
       expect(JSON.parse(result)[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 
@@ -36,8 +36,8 @@ describe "ActiveRecord analyze" do
     it "works" do
       result = User.all.analyze(format: :hash)
       expect(result[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 
@@ -45,8 +45,8 @@ describe "ActiveRecord analyze" do
     it "works" do
       result = User.all.analyze(format: :pretty_json)
       expect(JSON.parse(result)[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 
@@ -61,8 +61,8 @@ describe "ActiveRecord analyze" do
     it "works" do
       result = User.all.analyze(full_debug: true)
       expect(JSON.parse(result)[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 
@@ -72,11 +72,11 @@ describe "ActiveRecord analyze" do
         format: :hash,
         costs: true,
         timing: true,
-        summary: true
+        summary: true,
       )
       expect(result[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 end

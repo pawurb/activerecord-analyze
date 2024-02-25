@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'activerecord-analyze/main'
+require "activerecord-analyze/main"
 
 module ActiveRecordAnalyze
   def self.analyze_sql(raw_sql, opts = {})
@@ -11,14 +11,13 @@ module ActiveRecordAnalyze
         costs: true,
         buffers: true,
         timing: true,
-        summary: true
+        summary: true,
       }
     end
 
     prefix = "EXPLAIN #{build_prefix(opts)}"
 
     result = ActiveRecord::Base.connection.execute("#{prefix} #{raw_sql}").to_a
-
 
     if [:json, :hash, :pretty_json].include?(opts[:format])
       raw_json = result[0].fetch("QUERY PLAN")
@@ -38,53 +37,53 @@ module ActiveRecordAnalyze
 
   def self.build_prefix(opts = {})
     format_sql = if fmt = opts[:format].presence
-      case fmt
-      when :json
-        "FORMAT JSON, "
-      when :hash
-        "FORMAT JSON, "
-      when :pretty_json
-        "FORMAT JSON, "
-      when :yaml
-        "FORMAT YAML, "
-      when :text
-        "FORMAT TEXT, "
-      when :xml
-        "FORMAT XML, "
-      else
-        ""
+        case fmt
+        when :json
+          "FORMAT JSON, "
+        when :hash
+          "FORMAT JSON, "
+        when :pretty_json
+          "FORMAT JSON, "
+        when :yaml
+          "FORMAT YAML, "
+        when :text
+          "FORMAT TEXT, "
+        when :xml
+          "FORMAT XML, "
+        else
+          ""
+        end
       end
-    end
 
     verbose_sql = if opts[:verbose] == true
-      ", VERBOSE"
-    end
+        ", VERBOSE"
+      end
 
     costs_sql = if opts[:costs] == true
-      ", COSTS"
-    end
+        ", COSTS"
+      end
 
     settings_sql = if opts[:settings] == true
-      ", SETTINGS"
-    end
+        ", SETTINGS"
+      end
 
     buffers_sql = if opts[:buffers] == true
-      ", BUFFERS"
-    end
+        ", BUFFERS"
+      end
 
     timing_sql = if opts[:timing] == true
-      ", TIMING"
-    end
+        ", TIMING"
+      end
 
     summary_sql = if opts[:summary] == true
-      ", SUMMARY"
-    end
+        ", SUMMARY"
+      end
 
     analyze_sql = if opts[:analyze] == false
-      ""
-    else
-      "ANALYZE"
-    end
+        ""
+      else
+        "ANALYZE"
+      end
 
     opts_sql = "(#{format_sql}#{analyze_sql}#{verbose_sql}#{costs_sql}#{settings_sql}#{buffers_sql}#{timing_sql}#{summary_sql})"
       .strip.gsub(/\s+/, " ")

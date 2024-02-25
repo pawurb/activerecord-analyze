@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 describe "ActiveRecord analyze" do
   let(:raw_sql) do
@@ -31,8 +31,8 @@ describe "ActiveRecord analyze" do
     it "works" do
       puts result
       expect(JSON.parse(result)[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 
@@ -43,8 +43,8 @@ describe "ActiveRecord analyze" do
 
     it "works" do
       expect(result[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 
@@ -55,8 +55,8 @@ describe "ActiveRecord analyze" do
 
     it "works" do
       expect(JSON.parse(result)[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 
@@ -70,14 +70,14 @@ describe "ActiveRecord analyze" do
         format: :hash,
         costs: true,
         timing: true,
-        summary: true
+        summary: true,
       }
     end
 
     it "works" do
       expect(result[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 
@@ -88,15 +88,15 @@ describe "ActiveRecord analyze" do
 
     let(:opts) do
       {
-        full_debug: true
+        full_debug: true,
       }
     end
 
     it "works" do
       puts result
       expect(JSON.parse(result)[0].keys.sort).to eq [
-        "Execution Time", "Plan", "Planning Time", "Triggers"
-      ]
+           "Execution Time", "Plan", "Planning Time", "Triggers",
+         ]
     end
   end
 end
